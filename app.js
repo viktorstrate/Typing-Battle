@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var livereload = require('express-livereload');
 var mongoose = require('mongoose');
+var gameHandler = require('./gameHandler');
 
 var app = express();
 
@@ -45,7 +46,7 @@ var passport = require('./passport')(app);
 require('./routes/index')(app);
 require('./routes/auth')(app, passport);
 require('./routes/about')(app);
-require('./routes/battle')(app);
+require('./routes/battle')(app, gameHandler);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
