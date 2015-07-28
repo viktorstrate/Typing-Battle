@@ -6,6 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var livereload = require('express-livereload');
 var mongoose = require('mongoose');
 
 var app = express();
@@ -18,6 +19,12 @@ db.on('error', console.error.bind(console, 'connection error:'));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// live reload
+var config = {
+    watchDir: process.cwd() + "/public"
+};
+livereload(app, config);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -38,6 +45,7 @@ var passport = require('./passport')(app);
 require('./routes/index')(app);
 require('./routes/auth')(app, passport);
 require('./routes/about')(app);
+require('./routes/battle')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

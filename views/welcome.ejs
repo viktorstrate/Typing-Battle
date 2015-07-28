@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title></title>
-     <link rel="stylesheet" href="/stylesheets/style.css" />
-  </head>
-  <body>
-  	<div class="container">
-    	<h1 id="welcomeTitle">Typing Battle</h1>
-        <a href="/auth/facebook"><div class="button-blue noselect">Login with Facebook</div></a>
-        <div class="button-red noselect">Login with Email</div>
-        <div class="button-black noselect">Try without login</div>
-    </div>
-  </body>
+    <link rel="stylesheet" href="/styles/style.css"/>
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <script src="/js/welcome.js"></script>
+    <script src="/js/global.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1 id="welcomeTitle">Typing Battle</h1>
+
+    <div class="button-blue noselect" onclick="window.location='/auth/facebook'">Login with Facebook</div>
+
+    <div class="button-red noselect">Login with Email</div>
+    <div class="button-black noselect">Try without login</div>
+</div>
+</body>
 </html>

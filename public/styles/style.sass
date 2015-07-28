@@ -7,6 +7,10 @@ body
   font-family: "Lato", Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif
   background-color: #f7ebda
 
+
+a
+  text-decoration: none
+
 #welcomeTitle
   display: table
   text-align: center
@@ -26,6 +30,7 @@ body
   font-weight: 700
   text-transform: uppercase
   text-align: center
+  cursor: pointer
 
 .button-blue
   @extend .button
@@ -33,7 +38,7 @@ body
   box-shadow: 0 0.4vw #59a7e4
   background-color: #69b5f0
 
-  :hover
+  &:hover
     -webkit-box-shadow: 0 4px #78b5e4
     box-shadow: 0 0.4vw #78b5e4
     background-color: #8fc0f0

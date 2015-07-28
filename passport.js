@@ -18,6 +18,7 @@ var init = function(app){
         clientSecret: "b55437d89cac4ae0991bc27f8198f69c",
         callbackURL: "http://typingbattle.net/auth/facebook/callback"
     }, function(accessToken, refreshToken, profile, done){
+        console.log('Profile: ' + JSON.stringify(profile));
         User.find({'facebook.id': profile.id}, function(err, user){
             if(err){
                 return done(err);
