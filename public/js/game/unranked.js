@@ -1,4 +1,4 @@
-var battle = function () {
+var Battle = function () {
     // cache dom
     var $mainword = $('#main-word');
     var $nextword = $('#next-word');
@@ -20,6 +20,7 @@ var battle = function () {
 
     $(document).keypress(function (event) {
         var key = event.key;
+        sendType(key);
         if (key == nextLetter()) {
             completeLetter();
             correctLetters += 1;
@@ -53,13 +54,15 @@ var battle = function () {
         $nextword.html(getRandomWord());
     };
 
-    var words = [
-        'clover', 'juggle', 'innocent', 'tail', 'weight', 'plant', 'screw', 'friends',
-        'travel', 'chess', 'thunder', 'design', 'accurate', 'language', 'earth', 'fear',
-        'experience', 'calculator', 'wind', 'change', 'notebook', 'iron', 'baseball', 'death'
-    ];
+    var words = [];
     var getRandomWord = function () {
-        return words[Math.round(Math.random() * words.length - 1)];
+        return words.pop();
+    };
+
+    var setWords = function (w) {
+        words = w;
+        $notcompleted.html(words.pop());
+        $nextword.html(words.pop());
     };
 
     $nextword.html(getRandomWord());
@@ -78,10 +81,16 @@ var battle = function () {
 
     setInterval(updateScore, 500);
 
+    return {
+        setWords: setWords
+    }
+
 };
 
+var battle;
+
 $(document).ready(function () {
-    battle();
+    battle = new Battle();
 });
 
 var id = window.location.pathname.split('/');

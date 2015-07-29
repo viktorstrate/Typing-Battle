@@ -33,8 +33,14 @@ var Game = function (id) {
         if (wordlist == null) {
             fs.readFile(process.cwd() + '\\wordlist.txt', {encoding: 'utf8'}, function (err, data) {
                 if (err) throw err;
-                console.log(data);
-                deferred.resolve();
+                var words = data.split('\r\n');
+                wordlist = [];
+
+                for (var i = 0; i < 50; i++) {
+                    wordlist.push(words[Math.round(Math.random() * words.length)]);
+                }
+
+                deferred.resolve(wordlist);
             });
         } else deferred.resolve(wordlist);
 

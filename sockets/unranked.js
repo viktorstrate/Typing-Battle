@@ -22,7 +22,9 @@ var init = function (io) {
 
             for (var i = 0; i < games.length; i++) {
                 for (var x = 0; x < 2; x++) {
-                    if (games[i].getSockets[x] == socket) {
+                    if (games[i].game.getSockets()[x] == socket) {
+                        var notx = x == 0 ? 1 : 0;
+                        games[i].game.getSockets()[notx].emit('opponentLeft');
                         games.splice(i, 1);
                         console.log('User left running game');
                     }
@@ -36,7 +38,7 @@ var init = function (io) {
                 if (waiting[i].getId() == data.id) {
                     setupGame(waiting[i].getSocket(), socket, data.id);
                     foundPeer = true;
-                    console.log('User joined a unranked game: ' + data.id);
+                    console.log('Unranked match found: ' + data.id);
                 }
             }
             if (!foundPeer) {
@@ -54,6 +56,7 @@ var init = function (io) {
     });
 
     var setupGame = function (socket1, socket2, id) {
+        // remove old waiting sockets
         for (var i = 0; i < waiting.length; i++) {
             if (waiting[i].getSocket() == socket1 || waiting[i].getSocket() == socket2) {
                 waiting.splice(i, 1);
