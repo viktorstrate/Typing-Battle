@@ -83,3 +83,6 @@ var battle = function () {
 $(document).ready(function () {
     battle();
 });
+
+var id = window.location.pathname.split('/');
+id = id[id.length - 1];
