@@ -1,3 +1,6 @@
+var q = require('q');
+var fs = require('fs');
+
 var Game = function (id) {
     var _id = id;
     var _started = false;
@@ -24,12 +27,27 @@ var Game = function (id) {
         _started = s;
     };
 
+    var wordlist = null;
+    var getWordList = function () {
+        var deferred = q.defer();
+        if (wordlist == null) {
+            fs.readFile(process.cwd() + '\\wordlist.txt', {encoding: 'utf8'}, function (err, data) {
+                if (err) throw err;
+                console.log(data);
+                deferred.resolve();
+            });
+        } else deferred.resolve(wordlist);
+
+        return deferred.promise;
+    };
+
     return {
         getStarted: getStarted,
         setStarted: setStarted,
         getId: getId,
         getSockets: getSockets,
-        setSockets: setSockets
+        setSockets: setSockets,
+        getWordList: getWordList
     };
 };
 

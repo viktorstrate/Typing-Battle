@@ -1,7 +1,7 @@
 'use strict';
 var init = function (io) {
 
-    var Game = require('../game/game');
+    var Game = require('../game/unrankedGame');
     var Waiting = require('../game/waiting');
 
     var unranked = io.of('/unranked');
@@ -44,7 +44,13 @@ var init = function (io) {
                 socket.emit('status', {status: 'waiting'});
                 console.log('User waiting for unranked game: ' + data.id);
             }
-        })
+        });
+
+        socket.on('game', function (data) {
+            if (data.type == 'type') {
+
+            }
+        });
     });
 
     var setupGame = function (socket1, socket2, id) {
@@ -53,8 +59,7 @@ var init = function (io) {
                 waiting.splice(i, 1);
             }
         }
-        var game = new Game(id);
-        game.setSockets(socket1, socket2);
+        var game = new Game(id, socket1, socket2);
         games.push(game);
         console.log('game started: ' + id);
 
