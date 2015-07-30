@@ -4,7 +4,10 @@ var Battle = function () {
     var $nextword = $('#next-word');
     var $completed = $mainword.find('span').first();
     var $notcompleted = $mainword.find('span').last();
-    var $score = $('#timer');
+    var $yourScore = $('#your-score');
+    var $yourScoreText = $yourScore.find('h2').first();
+    var $theirScore = $('#their-score');
+    var $theirScoreText = $theirScore.find('h2').first();
 
     // variables
     var timeStarted = null;
@@ -12,7 +15,9 @@ var Battle = function () {
     var totalTypes = 0;
     var misses = 0;
     var missLetters = {};
-    var score = 0;
+    var yourScore = 0;
+    var theirScore = 0;
+    var maxScore = 0;
 
     var nextLetter = function () {
         return $notcompleted.html().charAt(0);
@@ -38,8 +43,6 @@ var Battle = function () {
         if ($notcompleted.html() == '') {
             nextWord();
         }
-
-        updateScore();
     });
 
 
@@ -65,24 +68,38 @@ var Battle = function () {
         $nextword.html(words.pop());
     };
 
-    $nextword.html(getRandomWord());
-
-    var updateScore = function () {
-        if (timeStarted == null) return;
-        var timeSec = ((new Date().getTime()) - timeStarted.getTime()) / 1000;
-        var timeMin = timeSec / 60;
-
-        var apm = (correctLetters / timeMin);
-        var accuracy = (1 - misses / totalTypes) || 1;
-
-        console.log("APM: " + apm + ", Accuracy: " + accuracy);
-        $score.html(Math.round(apm * accuracy));
+    var setMaxScore = function (s) {
+        maxScore = s;
     };
 
-    setInterval(updateScore, 500);
+    var setYourScore = function (s) {
+        yourScore = s;
+        updateScoreGUI();
+    };
+
+    var setTheirScore = function (s) {
+        theirScore = s;
+        updateScoreGUI();
+    };
+
+    var updateScoreGUI = function () {
+        $yourScoreText.html(yourScore);
+        $theirScoreText.html(theirScore);
+
+        var yourGoal = yourScore / maxScore;
+        var theirGoal = theirScore / maxScore;
+
+        $yourScore.css('height', 'calc(90vh * ' + yourGoal + ')');
+        $theirScore.css('height', 'calc(90vh * ' + theirGoal + ')');
+    };
+
+    $nextword.html(getRandomWord());
 
     return {
-        setWords: setWords
+        setWords: setWords,
+        setMaxScore: setMaxScore,
+        setYourScore: setYourScore,
+        setTheirScore: setTheirScore
     }
 
 };

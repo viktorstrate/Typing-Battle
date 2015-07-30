@@ -6,9 +6,10 @@ $(document).ready(function () {
         unranked.emit('init', {id: id});
     });
 
-    unranked.on('start', function (words) {
+    unranked.on('start', function (data) {
         console.log('Game started');
-        battle.setWords(words);
+        battle.setWords(data.wordlist);
+        battle.setMaxScore(data.maxscore);
     });
 
     unranked.on('status', function (data) {
@@ -16,8 +17,8 @@ $(document).ready(function () {
     });
 
     unranked.on('score', function (score) {
-        alert('SCORE: ' + score);
-        // TODO make the score
+        battle.setYourScore(score.yourScore);
+        battle.setTheirScore(score.theirScore);
     });
 
     unranked.on('opponentLeft', function () {
