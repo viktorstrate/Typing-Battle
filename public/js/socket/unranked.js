@@ -16,7 +16,7 @@ $(document).ready(function () {
     });
 
     unranked.on('score', function (score) {
-        console.log('Received score');
+        alert('SCORE: ' + score);
         // TODO make the score
     });
 

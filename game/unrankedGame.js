@@ -1,3 +1,4 @@
+'use strict';
 var Game = require('./game');
 
 var UnrankedGame = function (id, socket1, socket2) {
@@ -16,21 +17,30 @@ var UnrankedGame = function (id, socket1, socket2) {
             _game.getSockets()[i].emit('start', _wordlist);
             _game.getSockets()[i].player = {
                 score: 0,
-                wordlist: _wordlist
+                wordlist: _wordlist.slice(0) // slice to make a clone
             };
+
+            _game.getSockets()[i].player.wordRemain = _game.getSockets()[i].player.wordlist.pop();
 
             _game.getSockets()[i].on('type', function (char) {
 
-                if (this.player.wordRemain == null) {
-                    this.player.wordRemain = this.player.wordlist.pop();
-                }
+                if (!_game.getStarted()) return;
+
 
                 if (char == this.player.wordRemain.charAt(0)) {
-                    // TODO remove first letter
-                    console.log("true");
+                    if (this.player.wordRemain.length > 1) {
+                        this.player.wordRemain = this.player.wordRemain.replace(/^./g, '');
+                    } else {
+                        this.player.wordRemain = this.player.wordlist.pop();
+                    }
+                    this.player.score += 1;
                 } else {
-                    console.log("false");
+                    this.player.score -= 1;
                 }
+
+                this.emit('score', {
+                    score: this.player.score
+                });
             });
         }
     };

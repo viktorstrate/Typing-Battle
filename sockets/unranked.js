@@ -22,11 +22,13 @@ var init = function (io) {
 
             for (var i = 0; i < games.length; i++) {
                 for (var x = 0; x < 2; x++) {
+                    if (games[i] == null) continue;
                     if (games[i].game.getSockets()[x] == socket) {
                         var notx = x == 0 ? 1 : 0;
                         games[i].game.getSockets()[notx].emit('opponentLeft');
+                        games[i].game.setStarted(false);
                         games.splice(i, 1);
-                        console.log('User left running game');
+                        console.log('User left rnning game');
                     }
                 }
             }
@@ -63,6 +65,7 @@ var init = function (io) {
             }
         }
         var game = new Game(id, socket1, socket2);
+        game.game.setStarted(true);
         games.push(game);
         console.log('game started: ' + id);
 
