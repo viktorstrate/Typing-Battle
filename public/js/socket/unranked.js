@@ -3,6 +3,8 @@ $(document).ready(function () {
 
     // cache dom
     var $popup = $('#popup');
+    var $popupTitle = $popup.find('h2').first();
+    var $popupBody = $popup.find('p').first();
 
     var unranked = io.connect(window.location.protocol + '//' + window.location.host + "/unranked");
 
@@ -24,6 +26,16 @@ $(document).ready(function () {
     });
 
     unranked.on('finish', function (data) {
+
+        if (data.won) {
+            $popupTitle.html("You won!");
+            $popupBody.html("You won the game, if you both reload the page the game will restart");
+        } else {
+            $popupTitle.html("You lost!");
+            $popupBody.html("You lost the game, if you both reload the page the game will restart");
+        }
+
+        $popup.show();
         console.log("Won: " + data.won);
     });
 
@@ -33,7 +45,9 @@ $(document).ready(function () {
     });
 
     unranked.on('opponentLeft', function () {
-        console.log('opponent left');
+        $popupTitle.html("Opponent left the game.");
+        $popupBody.html("Your opponent left the game while it was still running");
+        $popup.show();
     });
 
     sendType = function (char) {

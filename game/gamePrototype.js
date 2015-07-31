@@ -5,7 +5,7 @@ var GamePrototype = {
     started: false,
     getWordList: function () {
         var deferred = q.defer();
-        fs.readFile(process.cwd() + '\\wordlist.txt', {encoding: 'utf8'}, function (err, data) {
+        fs.readFile(process.cwd() + '/wordlist.txt', {encoding: 'utf8'}, function (err, data) {
             if (err) throw err;
             var words = data.split('\r\n');
             _wordlist = [];
