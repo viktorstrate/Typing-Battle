@@ -11,7 +11,7 @@ $(document).ready(function () {
     });
 
     unranked.on('start', function (data) {
-        console.log('Game started');
+        console.log('gamePrototype started');
         battle.setWords(data.wordlist);
         battle.setMaxScore(data.maxscore);
 
