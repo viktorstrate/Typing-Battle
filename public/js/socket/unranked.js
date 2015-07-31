@@ -1,5 +1,9 @@
 var sendType;
 $(document).ready(function () {
+
+    // cache dom
+    var $popup = $('#popup');
+
     var unranked = io.connect(window.location.protocol + '//' + window.location.host + "/unranked");
 
     unranked.on('connect', function () {
@@ -10,6 +14,9 @@ $(document).ready(function () {
         console.log('Game started');
         battle.setWords(data.wordlist);
         battle.setMaxScore(data.maxscore);
+
+        $popup.hide();
+
     });
 
     unranked.on('status', function (data) {

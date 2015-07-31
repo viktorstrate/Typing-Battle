@@ -24,7 +24,7 @@ var Battle = function () {
     };
 
     $(document).keypress(function (event) {
-        var key = event.key;
+        var key = event.key || String.fromCharCode(event.keyCode);
         sendType(key);
         if (key == nextLetter()) {
             completeLetter();
