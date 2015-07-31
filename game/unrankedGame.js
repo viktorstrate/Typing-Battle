@@ -15,18 +15,16 @@ unrankedGame.emitScore = function () {
     }
 };
 
-unrankedGame.playerWon = function (number) {
-    for (var i = 0; i < 2; i++) {
-        if (i == number) {
-            _game.getSockets()[i].emit('finish', {
-                won: true
-            });
-        } else {
-            _game.getSockets()[i].emit('finish', {
-                won: false
-            });
-        }
-    }
+unrankedGame.playerWon = function (socketWon, socketLost) {
+    socketWon.emit('finish', {
+        won: true
+    });
+
+    socketLost.emit('finish', {
+        won: false
+    });
+
+    unrankedGame.started = false;
 };
 
 unrankedGame.start = function (wordlist) {
@@ -41,7 +39,8 @@ unrankedGame.start = function (wordlist) {
             score: 0,
             wordlist: wordlist.slice(0), // slice to make a clone
             wordStreak: 0, // how many words without misses
-            wordAce: true // true = no misses in current word
+            wordAce: true, // true = no misses in current word
+            maxscore: 2500 // the score needed to win
         };
 
         _unranked.sockets[i].player.wordRemain = _unranked.sockets[i].player.wordlist.pop();
@@ -77,7 +76,8 @@ unrankedGame.start = function (wordlist) {
             unrankedGame.emitScore.call(_unranked);
 
             if (_socket.player.score >= _socket.player.maxscore) {
-                // TODO player won!
+                var otherSocket = _socket == _unranked.sockets[0] ? _unranked.sockets[1] : _unranked.sockets[0];
+                unrankedGame.playerWon.call(this, _socket, otherSocket);
                 console.log("Player won");
             }
 

@@ -23,6 +23,10 @@ $(document).ready(function () {
         console.log(data.status);
     });
 
+    unranked.on('finish', function (data) {
+        console.log("Won: " + data.won);
+    });
+
     unranked.on('score', function (score) {
         battle.setYourScore(score.yourScore);
         battle.setTheirScore(score.theirScore);
