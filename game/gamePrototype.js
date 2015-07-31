@@ -7,11 +7,11 @@ var GamePrototype = {
         var deferred = q.defer();
         fs.readFile(process.cwd() + '/wordlist.txt', {encoding: 'utf8'}, function (err, data) {
             if (err) throw err;
-            var words = data.split('\r\n');
+            var words = data.split('\n');
             _wordlist = [];
 
             for (var i = 0; i < 50; i++) {
-                _wordlist.push(words[Math.round(Math.random() * words.length)]);
+                _wordlist.push(words[Math.round(Math.random() * words.length)].trim());
             }
 
             deferred.resolve(_wordlist);
