@@ -1,4 +1,7 @@
 var Battle = function () {
+
+    var battle = this;
+
     // cache dom
     var $mainword = $('#main-word');
     var $nextword = $('#next-word');
@@ -8,6 +11,7 @@ var Battle = function () {
     var $yourScoreText = $yourScore.find('h2').first();
     var $theirScore = $('#their-score');
     var $theirScoreText = $theirScore.find('h2').first();
+    var $timer = $('#timer');
 
     // variables
     var timeStarted = null;
@@ -18,12 +22,17 @@ var Battle = function () {
     var yourScore = 0;
     var theirScore = 0;
     var maxScore = 0;
+    this.gameRunning = false;
+
+    var tick = new Audio();
+    tick.src = '/sounds/tick.mp3';
 
     var nextLetter = function () {
         return $notcompleted.html().charAt(0);
     };
 
     $(document).keypress(function (event) {
+        if (!battle.gameRunning) return;
         var key = event.key || String.fromCharCode(event.keyCode);
         sendType(key);
         if (key == nextLetter()) {
@@ -62,22 +71,42 @@ var Battle = function () {
         return words.pop();
     };
 
-    var setWords = function (w) {
+    this.startCountdown = function (done) {
+        $timer.html('3');
+        tick.play();
+        setTimeout(function () {
+            $timer.html('2');
+            tick.play();
+            setTimeout(function () {
+                $timer.html('1');
+                tick.play();
+                setTimeout(function () {
+                    $timer.html('GO!');
+                    $timer.fadeOut(3000);
+                    done();
+                }, 1000);
+
+            }, 1000);
+
+        }, 1000);
+    };
+
+    this.setWords = function (w) {
         words = w;
         $notcompleted.html(words.pop());
         $nextword.html(words.pop());
     };
 
-    var setMaxScore = function (s) {
+    this.setMaxScore = function (s) {
         maxScore = s;
     };
 
-    var setYourScore = function (s) {
+    this.setYourScore = function (s) {
         yourScore = s;
         updateScoreGUI();
     };
 
-    var setTheirScore = function (s) {
+    this.setTheirScore = function (s) {
         theirScore = s;
         updateScoreGUI();
     };
@@ -94,13 +123,6 @@ var Battle = function () {
     };
 
     $nextword.html(getRandomWord());
-
-    return {
-        setWords: setWords,
-        setMaxScore: setMaxScore,
-        setYourScore: setYourScore,
-        setTheirScore: setTheirScore
-    }
 
 };
 

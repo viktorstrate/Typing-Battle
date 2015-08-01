@@ -1522,4 +1522,5 @@ tomorrow
 wake
 wrap
 yesterday
-zeptobyte
+zepto
+byte

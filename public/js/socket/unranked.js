@@ -14,10 +14,15 @@ $(document).ready(function () {
 
     unranked.on('start', function (data) {
         console.log('gamePrototype started');
-        battle.setWords(data.wordlist);
-        battle.setMaxScore(data.maxscore);
 
         $popup.hide();
+
+        battle.startCountdown(function () {
+            battle.setWords(data.wordlist);
+            battle.setMaxScore(data.maxscore);
+            battle.gameRunning = true;
+        });
+
 
     });
 
@@ -26,6 +31,8 @@ $(document).ready(function () {
     });
 
     unranked.on('finish', function (data) {
+
+        battle.gameRunning = false;
 
         if (data.won) {
             $popupTitle.html("You won!");
@@ -45,6 +52,7 @@ $(document).ready(function () {
     });
 
     unranked.on('opponentLeft', function () {
+        battle.gameRunning = false;
         $popupTitle.html("Opponent left the game.");
         $popupBody.html("Your opponent left the game while it was still running");
         $popup.show();
