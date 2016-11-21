@@ -1525,3 +1525,4 @@ yesterday
 zepto
 byte
 ninja
+hyperactive
